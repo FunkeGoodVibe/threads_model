@@ -5,6 +5,7 @@
 from bs4 import BeautifulSoup
 import requests
 import random
+import re
 
 dict_word_list = {
 
@@ -57,7 +58,10 @@ def speak():
             #determine which url to use 
             url = url_base_all 
 
-        return url
+            return url
+
+        else: 
+            speak()
 
 
 def get_verse(url):
@@ -82,6 +86,9 @@ def get_verse(url):
         el_list.append(element)
 
     print(el_list[1])
+    num_verse_full_string = str(el_list[1])
+    x = re.search(r"\d+", num_verse_full_string)
+    print(x.group())
 
 
 
