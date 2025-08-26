@@ -30,18 +30,17 @@ def speak():
     url_base_all = r"https://www.artbible.info/concordance/{0}/{1}-{2}.html"
 
     sentence = input("Say something: ")
+    sentence = sentence.lower()
 
     my_dict = list(dict_word_list.keys())
 
     for word in my_dict:
 
-        # word=r"\s{0}\s".format(word) #word separated by spaces
-        # x = re.search(word, sentence)
-        #if x.group() in sentence: 
-        
-        if word in sentence: 
+        word_regex=r"\s{0}".format(word) #word separated by spaces 
+        x = re.search(word_regex, sentence) #regex - search for word in setence 
 
-            #temp: print the word if found
+        if (x != None) and (x.group() in sentence): #if the regex word found & word in sentence
+
             print("found", word)
                 
             #get the index of the 
@@ -72,6 +71,7 @@ def get_verse(url):
     3) 
     """
 
+    related_verses = []
     r = requests.get(url)
     html_doc = r.text
 
@@ -81,21 +81,27 @@ def get_verse(url):
     #print(raw_strip)
 
     p_el = soup.find_all('p')
+    # print(p_el)
+
     el_list = []
     for element in p_el:
+        element = element.get_text() #remove all the tags
         el_list.append(element)
 
-    print(el_list[1])
+    #print(el_list[1])
     num_verse_full_string = str(el_list[1])
     x = re.search(r"\d+", num_verse_full_string)
-    print(x.group())
+    verse_count = int(x.group())
 
 
+    for i in range(2,(2+verse_count)):
+        related_verses.append(el_list[i])
+        print(el_list[i], "\n\n")
+
+    
 
 if __name__ == "__main__":
 
     while True: 
         url = speak()
         get_verse(url)
-    
-
