@@ -9,8 +9,8 @@ import re
 
 dict_word_list = {
 
-    "amaze": 1240,
-    "amazement":3333
+    #"amaze": 1240,
+    "amazement":3590
     
 }
 
@@ -36,7 +36,7 @@ def speak():
 
     for word in my_dict:
 
-        word_regex=r"\s{0}".format(word) #word separated by spaces 
+        word_regex=r".*{0}.*".format(word) #word separated by spaces 
         x = re.search(word_regex, sentence) #regex - search for word in setence 
 
         if (x != None) and (x.group() in sentence): #if the regex word found & word in sentence
