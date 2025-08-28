@@ -9,7 +9,7 @@ import re
 
 dict_word_list = {
 
-    #"amaze": 1240,
+    "amaze": 1240,
     "amazement":3590
     
 }
@@ -31,37 +31,42 @@ def speak():
 
     sentence = input("Say something: ")
     sentence = sentence.lower()
+    sentence_list = sentence.split(" ") #split each word 
 
-    my_dict = list(dict_word_list.keys())
+    my_dict = list(dict_word_list.keys()) #.values , #.items()- tuple
 
-    for word in my_dict:
+    print(sentence_list)
+    if len(sentence_list) >= 0:
 
-        word_regex=r".*{0}.*".format(word) #word separated by spaces 
-        x = re.search(word_regex, sentence) #regex - search for word in setence 
+        for word in sentence_list: 
 
-        if (x != None) and (x.group() in sentence): #if the regex word found & word in sentence
+            print(word)
+            
+            if word not in my_dict: 
+                pass
 
-            print("found", word)
-                
-            #get the index of the 
-            index = dict_word_list[word]
+            else: 
+            
+                print("found", word)
+                    
+                #get the index of the 
+                index = dict_word_list[word]
 
-            #generate a random number 1/2 for old and new testament
-            random_int = random.randint(1,2)
+                #generate a random number 1/2 for old and new testament
+                random_int = random.randint(1,2)
 
-            #construct the concordence urls 
-            url_base_ot = url_base_ot.format(word[0], index)
-            url_base_nt = url_base_nt.format(word[0], index)
-            url_base_all = url_base_all.format(word[0], index, random_int)
+                #construct the concordence urls 
+                url_base_ot = url_base_ot.format(word[0], index)
+                url_base_nt = url_base_nt.format(word[0], index)
+                url_base_all = url_base_all.format(word[0], index, random_int)
 
-            #determine which url to use 
-            url = url_base_all 
+                #determine which url to use 
+                #url = url_base_all 
+                url = url_base_nt 
 
-            return url
-
-        else: 
-            speak()
-
+                return url    
+    
+    
 
 def get_verse(url):
 
@@ -104,4 +109,6 @@ if __name__ == "__main__":
 
     while True: 
         url = speak()
-        get_verse(url)
+        
+        if url != None: 
+            get_verse(url)
