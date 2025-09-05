@@ -103,6 +103,14 @@ def get_verse(url):
         related_verses.append(el_list[i])
         print(el_list[i], "\n\n")
 
+    for verse in related_verses:
+        #strip_book_chapter = re.search(r".+:\d+$", verse)
+        strip_book_chapter = re.search(r".*:\d*", verse)
+        print(strip_book_chapter)
+        #current_reading = verse.replace(strip_book_chapter,"")
+
+        #print(current_reading)
+        #print("\n\n")
     
 
 if __name__ == "__main__":
@@ -111,4 +119,5 @@ if __name__ == "__main__":
         url = speak()
         
         if url != None: 
-            get_verse(url)
+            scrape_verses = get_verse(url)
+            #select_random_verse(scrape_verses)
