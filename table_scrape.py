@@ -35,12 +35,6 @@ def scrape(i):
     for link in soup.find_all('a'):
         num_map_ref.append(link.get('href'))
 
-    #print(num_map_ref[0:28])
-    # list_replace = ['/', './', 'a.html', 'b.html', 'c.html', 'd.html', 'e.html', 'f.html', 'g.html', 'h.html', 'i.html', 'j.html', 'k.html', 'l.html', 'm.html', 'n.html', 'o.html', 'p.html', 'q.html', 'r.html', 's.html', 't.html', 'u.html', 'v.html', 'w.html', 'x.html', 'y.html', 'z.html']
-    # list_replace = list_replace + ['/bible/apocrypha.html', '/bible/new-testament.html']
-    # urls_wanted_list = list(set(num_map_ref) - set(list_replace))
-    
-    
     #regex = re.compile(r'^http[s]?:\/?\/?([^:\/\s]+)/')
     regex = re.compile(r'.*-[12].html$')
     urls_wanted_list = [i for i in num_map_ref if regex.match(i)]
@@ -58,27 +52,24 @@ def scrape(i):
         word_map_table.append(row.get_text()) #returns i.e. [azrikam 6 0 0 6]
 
     word_table = []
-    for i in range(2,len(word_map_table)):  #for the first leible word in the table, to the last element
+    for i in range(1,len(word_map_table)):  #for the first leible word in the table, to the last element
         word_table.append(word_map_table[i].split("\n"))  #i.e. returns ['', 'azrikam', '6', '0', '0', '6', ''] ... 
     
 
-    #4. list comprehension strip/clean table, taking index 1:5 [azrikam', '6', '0', '0']
-    word_table_clean = [row[1:-2] for row in word_table]
-    
-    df = pd.DataFrame(word_table_clean, columns=['word', 'ot_count', 'nt_count','ap_count'])
+    #4. list comprehension strip/clean table, taking index 1:5 [azrikam', '6', '0']
+    word_table_clean = [row[1:-3] for row in word_table]
+    number_table_clean = [row[2:-3] for row in word_table]
+   
+    df = pd.DataFrame(word_table_clean, columns=['word', 'ot_count', 'nt_count'])
 
-    df_ot = df["ot_count"][df["ot_count"]!="0"]
-    df_nt = df["nt_count"][df["nt_count"]!="0"]
-    df_ap = df["ap_count"][df["ap_count"]!="0"]
+    # df_ot = df["ot_count"][df["ot_count"]!="0"]
+    # df_nt = df["nt_count"][df["nt_count"]!="0"]
 
     # print("{0} + {1} + {2} = {3}".format(len(df_ot), len(df_nt), len(df_ap), len(df_ot)+len(df_nt)+len(df_ap)))
     # print(len(num_map_urls))
 
-    #5. get 3x numbers only for url referencing ['6', '0', '0']
-    num_table_test = [row[2:-3] for row in word_table]
-    #num_table_non_zero = [num if num != "0" else None for num in num_table_test]
-
-    flatten_num_table_test = [x for list in num_table_test for x in list] 
+    #5. get ot,nt numbers only for url referencing ['6', '0']
+    flatten_num_table_test = [x for list in number_table_clean for x in list] 
     non_zero_num_table_test = [x for x in flatten_num_table_test if x != "0"]
 
     # print(len(non_zero_num_table_test))
@@ -95,4 +86,4 @@ if __name__ == "__main__":
         print(url_list[i])
         scrape(i)
         print("\n")
-    #scrape(0)
+    #scrape(22)
