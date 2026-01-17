@@ -39,49 +39,40 @@ def scrape(i):
     regex = re.compile(r'.*-[12].html$') #old/new testament (exclude apoc)
     urls_wanted_list = [i for i in num_map_ref if regex.match(i)]
 
-    # a/10892-1.html - azzur
-    # b/8160-1.html -
-    # c/10608-1.html - 
-
-    #2. get the index of the last html element 
-    # #get the url for each populated url reference, referenced below 
-    # num_map_urls = []
-    # end_val = len(urls_wanted_list)
-    # for i in range(0, end_val): 
-    #     num_map_urls.append(num_map_ref[i]) #i.e. 110-1.html 
-
-    # for i in range(0,100):
-    #     print("{0}:{1}".format(urls_wanted_list[i],num_map_urls[i]))
-
-    # print("{0}:{1}".format(len(urls_wanted_list),len(num_map_urls)))
-
-    """
-    #3. get the table contents (i.e. OT, NT, .. total word count)
+    
+    #2. get the table contents (i.e. OT, NT, .. total word count)
     word_map_table = []
     for row in soup.find_all('tr'):
         word_map_table.append(row.get_text()) #returns i.e. [azrikam 6 0 0 6]
 
+
     word_table = []
-    for i in range(1,len(word_map_table)):  #for the first leible word in the table, to the last element
+    for i in range(1,len(word_map_table)):  #for the first bible word in the table, to the last element
         word_table.append(word_map_table[i].split("\n"))  #i.e. returns ['', 'azrikam', '6', '0', '0', '6', ''] ... 
-    
 
-    #4. list comprehension strip/clean table, taking index 1:5 [azrikam', '6', '0']
+
+    #3. list comprehension strip/clean table, taking index 1:5 [azrikam', '6', '0']
     word_table_clean = [row[1:-3] for row in word_table]
-    number_table_clean = [row[2:-3] for row in word_table]
+    number_table_clean = [row[2:-3] for row in word_table] #i.e. ['6', '0']
 
+
+    #4. read into a df 
     df = pd.DataFrame(word_table_clean, columns=['word', 'ot_count', 'nt_count'])
     
-    #df["ot_url"] = 
+    print(df)
 
-    test = df[df["ot_count"] != 0]
     
-    print(test)
+    # test = df[df["ot_count"] != "0"]
+    # test = df[df["nt_count"] != "0"]
+    
+    # print(test)
 
+    
     #5. get ot,nt numbers only for url referencing ['6', '0']
     flatten_num_table_test = [x for list in number_table_clean for x in list] 
     non_zero_num_table_test = [x for x in flatten_num_table_test if x != "0"]
 
+    """
     # print(flatten_num_table_test)
     # print(len(non_zero_num_table_test))
     # print(urls_wanted_list)
