@@ -64,8 +64,7 @@ def speak():
                 #url = url_base_all 
                 url = url_base_nt 
 
-                return url    
-    
+                return url
     
 
 def get_verse(url):

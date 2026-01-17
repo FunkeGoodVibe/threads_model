@@ -27,8 +27,8 @@ def scrape(i):
 
     soup = BeautifulSoup(html_doc, 'html.parser')
     #raw_strip = soup.find("div", {"id": "contentkol"})
-    #raw_strip = soup.find(attrs={'class':'concorde'})
-    #print(raw_strip)
+    # raw_strip = soup.find(attrs={'class':'concorde'})
+    # print(raw_strip)
 
     #1. get all the word url numeric reference links (for the word mapping dictionary)
     num_map_ref = []
@@ -36,26 +36,16 @@ def scrape(i):
         num_map_ref.append(link.get('href'))
 
     #regex = re.compile(r'^http[s]?:\/?\/?([^:\/\s]+)/')
-    regex = re.compile(r'.*-[12].html$') #old/new testament (exclude apoc)
+    regex = re.compile(r'.*-[12].html$')
     urls_wanted_list = [i for i in num_map_ref if regex.match(i)]
 
-    # a/10892-1.html - azzur
-    # b/8160-1.html -
-    # c/10608-1.html - 
-
     #2. get the index of the last html element 
-    # #get the url for each populated url reference, referenced below 
-    # num_map_urls = []
-    # end_val = len(urls_wanted_list)
-    # for i in range(0, end_val): 
-    #     num_map_urls.append(num_map_ref[i]) #i.e. 110-1.html 
+    #get the url for each populated url reference, referenced below 
+    num_map_urls = []  
+    end_val = len(urls_wanted_list) - 10 
+    for i in range(0, end_val): 
+        num_map_urls.append(num_map_ref[i]) #i.e. 110-1.html 
 
-    # for i in range(0,100):
-    #     print("{0}:{1}".format(urls_wanted_list[i],num_map_urls[i]))
-
-    # print("{0}:{1}".format(len(urls_wanted_list),len(num_map_urls)))
-
-    """
     #3. get the table contents (i.e. OT, NT, .. total word count)
     word_map_table = []
     for row in soup.find_all('tr'):
@@ -88,7 +78,8 @@ def scrape(i):
 
     # for i in range(0,len(non_zero_num_table_test)):
     #     print("{0}:{1}".format(non_zero_num_table_test[i],urls_wanted_list[i]))
-    """
+    
+
 
 if __name__ == "__main__":
 
@@ -97,4 +88,4 @@ if __name__ == "__main__":
     #     print(url_list[i])
     #     scrape(i)
     #     print("\n")
-    scrape(0)
+    scrape(1)
